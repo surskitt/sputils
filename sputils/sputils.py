@@ -6,6 +6,7 @@ import spotipy
 
 
 def get_api_dict(user, client_id, client_secret):
+    """ Retrieve an api dictionary with params for spotify client object """
     return {
         'username': user,
         'client_id': client_id,
