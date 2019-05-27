@@ -6,20 +6,31 @@
 import pytest
 import unittest.mock
 
+import deepdiff
+
 
 from sputils import sputils
 
 
-def test_get_api_dict():
+@unittest.mock.patch('sputils.sputils.os')
+def test_get_api_dict(mock_os):
+    def mock_os_lambda(x):
+        return x.replace('~', '/home/test')
+    mock_os.path.expanduser.side_effect = mock_os_lambda
+
     expected = {
         'username': 'testuser',
         'client_id': 'test_client_id',
         'client_secret': 'test_client_secret',
         'redirect_uri': 'http://localhost',
-        'scope': 'user-library-read'
+        'scope': 'user-library-read',
+        'cache_path': '/home/test/.cache/sputils/user_cache'
     }
+
     api_dict_params = ('testuser', 'test_client_id', 'test_client_secret')
     api_dict = sputils.get_api_dict(*api_dict_params)
+
+    assert deepdiff.DeepDiff(api_dict, expected) == {}
 
 
 @unittest.mock.patch('sputils.sputils.spotipy')

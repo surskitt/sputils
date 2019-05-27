@@ -4,6 +4,7 @@
 
 import spotipy
 import spotipy.util
+import os
 
 
 def get_api_dict(user, client_id, client_secret):
@@ -13,7 +14,8 @@ def get_api_dict(user, client_id, client_secret):
         'client_id': client_id,
         'client_secret': client_secret,
         'redirect_uri': 'http://localhost',
-        'scope': 'user-library-read'
+        'scope': 'user-library-read',
+        'cache_path': os.path.expanduser('~/.cache/sputils/user_cache')
     }
 
 
