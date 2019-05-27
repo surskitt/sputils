@@ -2,6 +2,8 @@
 
 """Main module."""
 
+import spotipy
+
 
 def get_api_dict(user, client_id, client_secret):
     return {
