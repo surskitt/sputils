@@ -30,3 +30,13 @@ def get_spotify_client(user, client_id, client_secret):
         raise RuntimeError('Unable to retrieve authentication token')
 
     return spotipy.Spotify(auth=token)
+
+
+def track_to_dict(api_track):
+    return {
+        'artist': ', '.join(a['name'] for a in api_track['artists']),
+        'track': float('{}.{:02d}'.format(api_track['disc_number'],
+                                          api_track['track_number'])),
+        'name': api_track['name'],
+        'uri': api_track['uri']
+    }
