@@ -2,6 +2,7 @@
 
 """Main module."""
 
+import spotipy
 import spotipy.util
 
 
