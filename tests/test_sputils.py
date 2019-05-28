@@ -92,7 +92,7 @@ def test_album_to_dict(api_track):
         'album': {
             'artists': [{'name': 'artist1'}, {'name': 'artist2'}],
             'name': 'album',
-            'tracks': [api_track],
+            'tracks': {'items': [api_track]},
             'uri': 'uri',
             'images': [{'url': 'art_url'}]
         }

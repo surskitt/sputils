@@ -2,9 +2,10 @@
 
 """Main module."""
 
+import os
+
 import spotipy
 import spotipy.util
-import os
 
 
 def get_api_dict(user, client_id, client_secret):
@@ -47,7 +48,8 @@ def album_to_dict(api_album):
         'artist': ', '.join(a['name'] for a in api_album['album']['artists']),
         'name': api_album['album']['name'],
         'added': api_album['added_at'],
-        'tracks': [track_to_dict(t) for t in api_album['album']['tracks']],
+        'tracks': [track_to_dict(t)
+                   for t in api_album['album']['tracks']['items']],
         'uri': api_album['album']['uri'],
         'art_url': api_album['album']['images'][0]['url']
     }
