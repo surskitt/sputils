@@ -53,6 +53,7 @@ def test_get_spotify_client_token_failed(spotipy_mock):
         sp = sputils.get_spotify_client(*sp_params)
 
 
+@pytest.fixture
 def api_track():
     return {
         'artists': [{'name': 'artist1'}, {'name': 'artist2'}],
@@ -63,6 +64,7 @@ def api_track():
     }
 
 
+@pytest.fixture
 def track_dict():
     return {
         'artist': 'artist1, artist2',
@@ -72,41 +74,60 @@ def track_dict():
     }
 
 
+@pytest.fixture
 def api_album():
     return {
         'added_at': 'mtime',
         'album': {
             'artists': [{'name': 'artist1'}, {'name': 'artist2'}],
             'name': 'album',
-            'tracks': {'items': [api_track()]},
+            'tracks': {
+                'items': [
+                    {
+                        'artists': [{'name': 'artist1'}, {'name': 'artist2'}],
+                        'track_number': 1,
+                        'disc_number': 1,
+                        'name': 'track',
+                        'uri': 'uri'
+                    }
+                ]
+            },
             'uri': 'uri',
             'images': [{'url': 'art_url'}]
         }
     }
 
 
+@pytest.fixture
 def album_dict():
     return {
         'artist': 'artist1, artist2',
         'name': 'album',
         'added': 'mtime',
-        'tracks': [track_dict()],
+        'tracks': [
+            {
+                'artist': 'artist1, artist2',
+                'track': 1.01,
+                'name': 'track',
+                'uri': 'uri'
+            }
+        ],
         'uri': 'uri',
         'art_url': 'art_url'
     }
 
 
-def test_track_to_dict():
+def test_track_to_dict(api_track, track_dict):
 
-    track = sputils.track_to_dict(api_track())
+    track = sputils.track_to_dict(api_track)
 
-    assert deepdiff.DeepDiff(track, track_dict()) == {}
+    assert deepdiff.DeepDiff(track, track_dict) == {}
 
 
-def test_album_to_dict():
-    album = sputils.album_to_dict(api_album())
+def test_album_to_dict(api_album, album_dict):
+    album = sputils.album_to_dict(api_album)
 
-    assert deepdiff.DeepDiff(album, album_dict()) == {}
+    assert deepdiff.DeepDiff(album, album_dict) == {}
 
 
 def test_limit_split():
@@ -119,17 +140,17 @@ def test_limit_split():
 
 @pytest.fixture
 @unittest.mock.patch('sputils.sputils.spotipy')
-def sp_mock(sp_mock):
+def sp_mock(sp_mock, api_album):
     sp_mock.Spotify.return_value.current_user_saved_albums.return_value = {
-        'items': [api_album()],
+        'items': [api_album],
         'total': 2
     }
 
     return sp_mock
 
 
-def test_get_albums(sp_mock):
-    expected = [album_dict()]
+def test_get_albums(sp_mock, album_dict):
+    expected = [album_dict]
 
     sp = sp_mock.Spotify()
     albums = sputils.get_albums(sp, 1, 0)
@@ -137,8 +158,8 @@ def test_get_albums(sp_mock):
     assert deepdiff.DeepDiff(albums, expected) == {}
 
 
-def test_collect_albums(sp_mock):
-    expected = [album_dict(), album_dict()]
+def test_collect_albums(sp_mock, album_dict):
+    expected = [album_dict, album_dict]
 
     sp = sp_mock.Spotify()
     albums = sputils.collect_albums(sp, 1)
@@ -146,14 +167,14 @@ def test_collect_albums(sp_mock):
     assert deepdiff.DeepDiff(albums, expected) == {}
 
 
-def test_collect_tracks(sp_mock):
+def test_collect_tracks(sp_mock, track_dict):
     ad = {
         'albumartist': 'artist1, artist2',
         'album': 'album',
         'added': 'mtime',
         'art_url': 'art_url',
     }
-    td = {**track_dict(), **ad}
+    td = {**track_dict, **ad}
 
     expected = [td, td]
 
