@@ -117,12 +117,18 @@ def test_limit_split():
     assert splits == expected
 
 
+@pytest.fixture
 @unittest.mock.patch('sputils.sputils.spotipy')
-def test_get_albums(sp_mock):
+def sp_mock(sp_mock):
     sp_mock.Spotify.return_value.current_user_saved_albums.return_value = {
-        'items': [api_album()]
+        'items': [api_album()],
+        'total': 2
     }
 
+    return sp_mock
+
+
+def test_get_albums(sp_mock):
     expected = [album_dict()]
 
     sp = sp_mock.Spotify()
@@ -131,13 +137,7 @@ def test_get_albums(sp_mock):
     assert deepdiff.DeepDiff(albums, expected) == {}
 
 
-@unittest.mock.patch('sputils.sputils.spotipy')
 def test_collect_albums(sp_mock):
-    sp_mock.Spotify.return_value.current_user_saved_albums.return_value = {
-        'items': [api_album()],
-        'total': 2
-    }
-
     expected = [album_dict(), album_dict()]
 
     sp = sp_mock.Spotify()
@@ -146,13 +146,7 @@ def test_collect_albums(sp_mock):
     assert deepdiff.DeepDiff(albums, expected) == {}
 
 
-@unittest.mock.patch('sputils.sputils.spotipy')
 def test_collect_tracks(sp_mock):
-    sp_mock.Spotify.return_value.current_user_saved_albums.return_value = {
-        'items': [api_album()],
-        'total': 2
-    }
-
     ad = {
         'albumartist': 'artist1, artist2',
         'album': 'album',
