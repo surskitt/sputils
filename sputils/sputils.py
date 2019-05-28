@@ -57,3 +57,11 @@ def album_to_dict(api_album):
 
 def limit_split(lmax, start=50, limit=50):
     return [(limit, offset) for offset in range(start, lmax, limit)]
+
+
+def get_albums(sp, limit, offset):
+    api_albums = sp.current_user_saved_albums(limit, offset)
+
+    albums = [album_to_dict(a) for a in api_albums['items']]
+
+    return albums

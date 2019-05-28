@@ -117,5 +117,15 @@ def test_limit_split():
     assert splits == expected
 
 
-def get_albums():
-    pass
+@unittest.mock.patch('sputils.sputils.spotipy')
+def test_get_albums(sp_mock):
+    sp_mock.Spotify.return_value.current_user_saved_albums.return_value = {
+        'items': [api_album()]
+    }
+
+    expected = [album_dict()]
+
+    sp = sp_mock.Spotify()
+    albums = sputils.get_albums(sp, 1, 0)
+
+    assert deepdiff.DeepDiff(albums, expected) == {}
