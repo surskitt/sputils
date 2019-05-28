@@ -68,7 +68,7 @@ def get_albums(sp, limit, offset):
     return albums
 
 
-def collect_albums(sp, limit=50):
+def collect_albums(sp, limit=50, workers=50):
     total_albums = sp.current_user_saved_albums(1)['total']
 
     args = limit_split(total_albums, 0, limit)
@@ -79,15 +79,15 @@ def collect_albums(sp, limit=50):
         return f
 
     helper = collector_helper(sp)
-    with concurrent.futures.ThreadPoolExecutor(max_workers=50) as executor:
+    with concurrent.futures.ThreadPoolExecutor(workers) as executor:
         album_map = executor.map(helper, args)
 
     albums = [i for s in album_map for i in s]
     return sorted(albums, key=lambda x: x['added'], reverse=True)
 
 
-def collect_tracks(sp, limit=50):
-    albums = collect_albums(sp, limit)
+def collect_tracks(sp, limit=50, workers=50):
+    albums = collect_albums(sp, limit, workers)
 
     tracks = [i for s in albums for i in s['tracks']]
 
