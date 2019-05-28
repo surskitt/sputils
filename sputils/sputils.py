@@ -89,6 +89,15 @@ def collect_albums(sp, limit=50, workers=50):
 def collect_tracks(sp, limit=50, workers=50):
     albums = collect_albums(sp, limit, workers)
 
-    tracks = [i for s in albums for i in s['tracks']]
+    def album_tracks(album):
+        album_dict = {
+            'albumartist': album['artist'],
+            'album': album['name'],
+            'added': album['added'],
+            'art_url': album['art_url']
+        }
+        return [{**t, **album_dict} for t in album['tracks']]
+
+    tracks = [i for s in albums for i in album_tracks(s)]
 
     return tracks

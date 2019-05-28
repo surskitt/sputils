@@ -153,7 +153,15 @@ def test_collect_tracks(sp_mock):
         'total': 2
     }
 
-    expected = [track_dict(), track_dict()]
+    ad = {
+        'albumartist': 'artist1, artist2',
+        'album': 'album',
+        'added': 'mtime',
+        'art_url': 'art_url',
+    }
+    td = {**track_dict(), **ad}
+
+    expected = [td, td]
 
     sp = sp_mock.Spotify()
     tracks = sputils.collect_tracks(sp, 1)
