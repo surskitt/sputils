@@ -40,3 +40,14 @@ def track_to_dict(api_track):
         'name': api_track['name'],
         'uri': api_track['uri']
     }
+
+
+def album_to_dict(api_album):
+    return {
+        'artist': ', '.join(a['name'] for a in api_album['album']['artists']),
+        'name': api_album['album']['name'],
+        'added': api_album['added_at'],
+        'tracks': [track_to_dict(t) for t in api_album['album']['tracks']],
+        'uri': api_album['album']['uri'],
+        'art_url': api_album['album']['images'][0]['url']
+    }
