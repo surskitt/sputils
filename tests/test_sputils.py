@@ -144,3 +144,18 @@ def test_collect_albums(sp_mock):
     albums = sputils.collect_albums(sp, 1)
 
     assert deepdiff.DeepDiff(albums, expected) == {}
+
+
+@unittest.mock.patch('sputils.sputils.spotipy')
+def test_collect_tracks(sp_mock):
+    sp_mock.Spotify.return_value.current_user_saved_albums.return_value = {
+        'items': [api_album()],
+        'total': 2
+    }
+
+    expected = [track_dict(), track_dict()]
+
+    sp = sp_mock.Spotify()
+    tracks = sputils.collect_tracks(sp, 1)
+
+    assert deepdiff.DeepDiff(tracks, expected) == {}

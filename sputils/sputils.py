@@ -84,3 +84,11 @@ def collect_albums(sp, limit=50):
 
     albums = [i for s in album_map for i in s]
     return sorted(albums, key=lambda x: x['added'], reverse=True)
+
+
+def collect_tracks(sp, limit=50):
+    albums = collect_albums(sp, limit)
+
+    tracks = [i for s in albums for i in s['tracks']]
+
+    return tracks
