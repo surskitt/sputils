@@ -82,4 +82,5 @@ def collect_albums(sp, limit=50):
     with concurrent.futures.ThreadPoolExecutor(max_workers=50) as executor:
         album_map = executor.map(helper, args)
 
-    return [i for s in album_map for i in s]
+    albums = [i for s in album_map for i in s]
+    return sorted(albums, key=lambda x: x['added'], reverse=True)
