@@ -101,3 +101,11 @@ def test_album_to_dict(api_track):
     album = sputils.album_to_dict(api_album)
 
     assert deepdiff.DeepDiff(album, expected) == {}
+
+
+def test_limit_split():
+    expected = [(50, 100), (50, 150), (50, 200), (50, 250)]
+
+    splits = sputils.limit_split(290, 100, 50)
+
+    assert splits == expected

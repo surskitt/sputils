@@ -53,3 +53,7 @@ def album_to_dict(api_album):
         'uri': api_album['album']['uri'],
         'art_url': api_album['album']['images'][0]['url']
     }
+
+
+def limit_split(lmax, start=50, limit=50):
+    return [(limit, offset) for offset in range(start, lmax, limit)]
