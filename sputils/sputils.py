@@ -3,6 +3,7 @@
 """Main module."""
 
 import os
+import concurrent.futures
 
 import spotipy
 import spotipy.util
@@ -55,7 +56,7 @@ def album_to_dict(api_album):
     }
 
 
-def limit_split(lmax, start=50, limit=50):
+def limit_split(lmax, start=0, limit=50):
     return [(limit, offset) for offset in range(start, lmax, limit)]
 
 
@@ -65,3 +66,20 @@ def get_albums(sp, limit, offset):
     albums = [album_to_dict(a) for a in api_albums['items']]
 
     return albums
+
+
+def collect_albums(sp, limit=50):
+    total_albums = sp.current_user_saved_albums(1)['total']
+
+    args = limit_split(total_albums, 0, limit)
+
+    def collector_helper(sp):
+        def f(args):
+            return get_albums(sp, *args)
+        return f
+
+    helper = collector_helper(sp)
+    with concurrent.futures.ThreadPoolExecutor(max_workers=50) as executor:
+        album_map = executor.map(helper, args)
+
+    return [i for s in album_map for i in s]
