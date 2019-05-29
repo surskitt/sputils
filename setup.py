@@ -36,7 +36,7 @@ setup(
         'console_scripts': [
             'sputils = sputils.sputils:main'
         ]
-    }
+    },
     license="Apache Software License 2.0",
     long_description=readme + '\n\n' + history,
     include_package_data=True,
