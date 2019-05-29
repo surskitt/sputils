@@ -50,7 +50,7 @@ def test_get_spotify_client_token_failed(spotipy_mock):
     exception_msg = 'Unable to retrieve authentication token'
     with pytest.raises(RuntimeError, match=exception_msg):
         sp_params = ('testuser', 'test_client_id', 'test_client_secret')
-        sp = sputils.get_spotify_client(*sp_params)
+        sputils.get_spotify_client(*sp_params)
 
 
 @pytest.fixture

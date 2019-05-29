@@ -16,7 +16,8 @@ import yaml
 def parse_args(args):
     desc = 'A collection of spotify utilities for use with other shell utils.'
     cfgfiles = ['/etc/sputils.d/*.conf', '~/.config/sputils/*.conf']
-    parser = configargparse.ArgParser(default_config_files=cfgfiles)
+    parser = configargparse.ArgParser(default_config_files=cfgfiles,
+                                      description=desc)
     parser.add('-c', '--config', is_config_file=True,
                help='config file path')
 
@@ -160,6 +161,6 @@ def main():
         output = '\n'.join(format_dict(line, args.line_format)
                            for line in items)
     elif args.format == 'yaml':
-        output = yaml.dump(entries)
+        output = yaml.dump(items)
 
     print(output)
