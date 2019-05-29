@@ -118,7 +118,6 @@ def album_dict():
 
 
 def test_track_to_dict(api_track, track_dict):
-
     track = sputils.track_to_dict(api_track)
 
     assert deepdiff.DeepDiff(track, track_dict) == {}
