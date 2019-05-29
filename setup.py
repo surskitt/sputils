@@ -41,7 +41,7 @@ setup(
     long_description=readme + '\n\n' + history,
     include_package_data=True,
     keywords='sputils',
-    name='sputils',
+    name='spotify_sputils',
     packages=find_packages(include=['sputils']),
     setup_requires=setup_requirements,
     test_suite='tests',
