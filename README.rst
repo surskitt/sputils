@@ -43,8 +43,16 @@ Install
 
 sputils can be installed using:
 
-* pip
+* pip_
 * AUR
+
+.. _pip: https://pypi.org/project/spotify-sputils/
+
+**Note:** The spotipy package has a problem actually installing the new version, mentioned in this issue_. After installing sputils from pip, you will need to run:
+
+    pip install git+https://github.com/plamere/spotipy.git --upgrade
+
+.. _issue: https://github.com/plamere/spotipy/issues/211
 
 Credits
 -------
