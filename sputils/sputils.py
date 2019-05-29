@@ -22,7 +22,7 @@ def parse_args(args):
                help='action to perform')
 
     format_choices = ['json', 'lines', 'yaml']
-    parser.add('-f', '--format', choices=format_choices, default='lines',
+    parser.add('-f', '--format', choices=format_choices, default='json',
                help='output format')
     parser.add('-l', '--line_format', default='{artist} - {name}', type=str,
                help='format for outputting lines, accepts json keys')
