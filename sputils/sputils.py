@@ -7,6 +7,21 @@ import concurrent.futures
 
 import spotipy
 import spotipy.util
+import configargparse
+
+
+def parse_args(args):
+    desc = 'A collection of spotify utilities for use with other shell utils.'
+    cfgfiles = ['/etc/sputils.d/*.conf', '~/.config/sputils/*.conf']
+    parser = configargparse.ArgParser(default_config_files=cfgfiles)
+    parser.add('-c', '--config', is_config_file=True,
+               help='config file path')
+
+    format_choices = ['json', 'lines', 'yaml']
+    parser.add('-f', '--format', choices=format_choices, default='lines',
+               help='output format')
+
+    return parser.parse_args(args)
 
 
 def get_api_dict(user, client_id, client_secret):

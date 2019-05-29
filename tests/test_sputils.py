@@ -189,3 +189,10 @@ def test_format_dict(album_dict):
     formatted = sputils.format_dict(album_dict, format_string)
 
     assert formatted == expected
+
+
+@pytest.mark.parametrize('f', ['json', 'lines', 'yaml'])
+def test_parse_args_format(f):
+    args = sputils.parse_args(['--format', f])
+
+    assert args.format == f
