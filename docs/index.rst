@@ -1,5 +1,5 @@
 Welcome to sputils's documentation!
-======================================
+===================================
 
 .. toctree::
    :maxdepth: 2

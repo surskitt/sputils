@@ -22,6 +22,8 @@ you through the process.
 .. _pip: https://pip.pypa.io
 .. _Python installation guide: http://docs.python-guide.org/en/latest/starting/installation/
 
+You can also install using AUR.
+
 
 From sources
 ------------

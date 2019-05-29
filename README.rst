@@ -30,7 +30,21 @@ A collection of spotify utilities, designed to be used in conjunction with other
 Features
 --------
 
-* TODO
+* Output spotify collection information:
+    * Albums
+    * Tracks
+* Format output as:
+    * json
+    * lines
+    * yaml
+
+Install
+-------
+
+sputils can be installed using:
+
+* pip
+* AUR
 
 Credits
 -------
