@@ -193,6 +193,13 @@ def test_format_dict(album_dict):
 
 @pytest.mark.parametrize('f', ['json', 'lines', 'yaml'])
 def test_parse_args_format(f):
-    args = sputils.parse_args(['--format', f])
+    args = sputils.parse_args(f'--format {f}')
 
     assert args.format == f
+
+
+@pytest.mark.parametrize('a', ['albums', 'tracks'])
+def test_parse_args_action(a):
+    args = sputils.parse_args(f'--action {a}')
+
+    assert args.action == a

@@ -17,6 +17,10 @@ def parse_args(args):
     parser.add('-c', '--config', is_config_file=True,
                help='config file path')
 
+    actions = ['albums', 'tracks']
+    parser.add('-a', '--action', choices=actions, default='albums',
+               help='action to perform')
+
     format_choices = ['json', 'lines', 'yaml']
     parser.add('-f', '--format', choices=format_choices, default='lines',
                help='output format')
