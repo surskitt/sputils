@@ -152,7 +152,7 @@ def main():
 
     if args.action == 'albums':
         items = collect_albums(sp)
-    elif args.actin == 'tracks':
+    elif args.action == 'tracks':
         items = collect_tracks(sp)
 
     if args.format == 'json':
