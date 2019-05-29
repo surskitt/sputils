@@ -1,11 +1,10 @@
 # Config file for automatic testing at travis-ci.org
 
+dist: xenial
 language: python
 python:
+  - 3.7
   - 3.6
-  - 3.5
-  - 3.4
-  - 2.7
 
 # Command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install: pip install -U tox-travis
@@ -22,8 +21,8 @@ deploy:
   distributions: sdist bdist_wheel
   user: sharktamer
   password:
-    secure: PLEASE_REPLACE_ME
+    secure: Jy0TmE8wpn0AgwX16fZc9qt0Lkpj2oWWGaS9sUFa6hXx9crktl1g4n8kQnV6TtDA84T4NGgUMgydaNqhOY8Nr30IS0hTqNYPTLiG1ZXqF3VYTAxr7WIA0kFvBoyvuEr/bAW3ZJyL61gLFvxCC+BjK7oRl55yNLlLtjwdSC01uA9UxdZxgLgrBgeJvLklVgElbWuRUg2/LmBPkf0zZ14pjIJgj4f9QxsoI9acleqMGuNlThsGBbHa92k02q/SSEGAEtpb0UrE/77DMcucquabSECsI8L1qAB+sW/8jtRlDOhEC45auYEL9AwVzfQK6bpnekTgXVa3QWKDvspIgl9GVV2wl6l3xmLbOWXL/fvL58PVOqR1i+sgojNUUP9HWn0pn0gIZf/c7i/paNjryM84x35EewpRWVRqgdzhGeDGpJKIqjTcf+KIro8iTvr4obUrG6fI3pKzbVGYesYnRSplfO3lqdfU031J4liqxCIYY7JqUSxxXJH87d18gct+1qZLq3raRATFNdUVcADFOlBxTLI4afu0vNlRGsnFgW1viwK2EBJF2RXF7Rso0pqYQOFa9c/mY71sTrS0K0yTaxb/+IbNBVXfgZZLdCdSexjiqVMOAULpBRkOZ6D4ebckM5cflOggLai80rsBtgghqiiYEFljgLvW0LqY3T40X1Vd60g=
   on:
     tags: true
     repo: shanedabes/sputils
-    python: 3.6
+    python: 3.7
