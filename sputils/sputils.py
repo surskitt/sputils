@@ -5,10 +5,12 @@
 import os
 import sys
 import concurrent.futures
+import json
 
 import spotipy
 import spotipy.util
 import configargparse
+import yaml
 
 
 def parse_args(args):
@@ -138,3 +140,26 @@ def format_dict(d, format_string):
 
 def main():
     args = parse_args(sys.argv[1:])
+
+    # Create cache dir
+    try:
+        os.makedirs(os.path.expanduser('~/.cache/sputils'))
+    except FileExistsError:
+        pass
+
+    sp = get_spotify_client(args.user, args.client_id, args.client_secret)
+
+    if args.action == 'albums':
+        items = collect_albums(sp)
+    elif args.actin == 'tracks':
+        items = collect_tracks(sp)
+
+    if args.format == 'json':
+        output = json.dumps(items, indent=4)
+    elif args.format == 'lines':
+        output = '\n'.join(format_dict(line, args.line_format)
+                           for line in items)
+    elif args.format == 'yaml':
+        output = yaml.dump(entries)
+
+    print(output)
