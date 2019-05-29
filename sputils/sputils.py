@@ -3,6 +3,7 @@
 """Main module."""
 
 import os
+import sys
 import concurrent.futures
 
 import spotipy
@@ -126,3 +127,7 @@ def collect_tracks(sp, limit=50, workers=50):
 
 def format_dict(d, format_string):
     return format_string.format(**d)
+
+
+def main():
+    args = parse_args(sys.argv[1:])
