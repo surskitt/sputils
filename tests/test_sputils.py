@@ -181,3 +181,11 @@ def test_collect_tracks(sp_mock, track_dict):
     tracks = sputils.collect_tracks(sp, 1)
 
     assert deepdiff.DeepDiff(tracks, expected) == {}
+
+
+def test_format_dict(album_dict):
+    format_string = '{artist} - {name}'
+    expected = 'artist1, artist2 - album'
+    formatted = sputils.format_dict(album_dict, format_string)
+
+    assert formatted == expected

@@ -101,3 +101,7 @@ def collect_tracks(sp, limit=50, workers=50):
     tracks = [i for s in albums for i in album_tracks(s)]
 
     return tracks
+
+
+def format_dict(d, format_string):
+    return format_string.format(**d)
