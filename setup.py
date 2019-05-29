@@ -11,7 +11,8 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-requirements = [ ]
+with open('requirements.txt') as requirements_file:
+    requirements = requirements_file.readlines()
 
 setup_requirements = ['pytest-runner', ]
 
@@ -21,20 +22,21 @@ setup(
     author="Shane Donohoe",
     author_email='shane@donohoe.cc',
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Natural Language :: English',
-        "Programming Language :: Python :: 2",
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
     ],
-    description="A collection of spotify utilities, designed to be used in conjunction with other shell utilities.",
+    description=("A collection of spotify utilities, designed to be used in "
+                 "conjunction with other shell utilities."),
     install_requires=requirements,
+    entry_points={
+        'console_scripts': [
+            'sputils = sputils.sputils:main'
+        ]
+    }
     license="Apache Software License 2.0",
     long_description=readme + '\n\n' + history,
     include_package_data=True,
