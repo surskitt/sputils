@@ -191,15 +191,28 @@ def test_format_dict(album_dict):
     assert formatted == expected
 
 
+@pytest.fixture
+def default_args():
+    return '--user testuser --client_id a --client_secret b'
+
+
 @pytest.mark.parametrize('f', ['json', 'lines', 'yaml'])
-def test_parse_args_format(f):
-    args = sputils.parse_args(f'--format {f}')
+def test_parse_args_format(f, default_args):
+    args = sputils.parse_args(f'--format {f} {default_args}')
 
     assert args.format == f
 
 
 @pytest.mark.parametrize('a', ['albums', 'tracks'])
-def test_parse_args_action(a):
-    args = sputils.parse_args(f'--action {a}')
+def test_parse_args_action(a, default_args):
+    args = sputils.parse_args(f'--action {a} {default_args}')
 
     assert args.action == a
+
+
+def test_parse_args_user_args(default_args):
+    args = sputils.parse_args(default_args)
+
+    assert args.user == 'testuser'
+    assert args.client_id == 'a'
+    assert args.client_secret == 'b'

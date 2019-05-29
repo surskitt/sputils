@@ -18,6 +18,13 @@ def parse_args(args):
     parser.add('-c', '--config', is_config_file=True,
                help='config file path')
 
+    parser.add('-u', '--user', type=str, required=True,
+               help='spotify user')
+    parser.add('--client_id', type=str, required=True,
+               help='spotify client id')
+    parser.add('--client_secret', type=str, required=True,
+               help='spotify client secret')
+
     actions = ['albums', 'tracks']
     parser.add('-a', '--action', choices=actions, default='albums',
                help='action to perform')
