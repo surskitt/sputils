@@ -32,8 +32,7 @@ setup(
     description=("A collection of spotify utilities, designed to be used in "
                  "conjunction with other shell utilities."),
     install_requires=requirements,
-    dependency_links=[("git+https://git@github.com/plamere/spotipy.git"
-                       "@master#egg=spotipy-2.4.4")],
+    dependency_links=["git+https://git@github.com/plamere/spotipy.git@master#egg=spotipy-2.4.4"],
     entry_points={
         'console_scripts': [
             'sputils = sputils.sputils:main'
