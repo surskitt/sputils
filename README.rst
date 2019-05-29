@@ -3,8 +3,8 @@ sputils
 =======
 
 
-.. image:: https://img.shields.io/pypi/v/sputils.svg
-        :target: https://pypi.python.org/pypi/sputils
+.. image:: https://img.shields.io/pypi/v/spotify-sputils.svg
+        :target: https://pypi.python.org/pypi/spotify-sputils
 
 .. image:: https://img.shields.io/travis/shanedabes/sputils.svg
         :target: https://travis-ci.org/shanedabes/sputils
