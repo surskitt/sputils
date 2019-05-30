@@ -208,13 +208,4 @@ def main():
     sp = get_spotify_client(args.user, args.client_id, args.client_secret)
 
     items = collector(sp, args.action)
-
-    if args.format == 'json':
-        output = json.dumps(items, indent=4)
-    elif args.format == 'lines':
-        output = '\n'.join(format_dict(line, args.line_format)
-                           for line in items)
-    elif args.format == 'yaml':
-        output = yaml.dump(items)
-
-    print(output)
+    print(formatter(items, args.format, args.line_format))
