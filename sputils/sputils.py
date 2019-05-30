@@ -28,7 +28,7 @@ def parse_args(args):
     parser.add('--client_secret', type=str, required=True,
                help='spotify client secret')
 
-    actions = ['albums', 'tracks']
+    actions = ['albums', 'tracks', 'playlists']
     parser.add('-a', '--action', choices=actions, default='albums',
                help='action to perform')
 
@@ -92,7 +92,8 @@ def playlist_to_dict(api_playlist):
     return {
         'name': api_playlist['name'],
         'uri': api_playlist['uri'],
-        'art_url': api_playlist['images'][0]['url']
+        'art_url': api_playlist['images'][0]['url'],
+        'length': api_playlist['tracks']['total']
     }
 
 
@@ -188,6 +189,8 @@ def main():
         items = collect_albums(sp)
     elif args.action == 'tracks':
         items = collect_tracks(sp)
+    elif args.action == 'playlists':
+        items = collect_playlists(sp)
 
     if args.format == 'json':
         output = json.dumps(items, indent=4)
