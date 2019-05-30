@@ -228,7 +228,8 @@ def api_playlist():
     return {
         'images': [{'url': 'playlist_img_url'}],
         'name': 'playlist',
-        'uri': 'playlist_uri'
+        'uri': 'playlist_uri',
+        'tracks': {'total': 10}
     }
 
 
@@ -237,7 +238,8 @@ def playlist_dict():
     return {
         'name': 'playlist',
         'uri': 'playlist_uri',
-        'art_url': 'playlist_img_url'
+        'art_url': 'playlist_img_url',
+        'length': 10
     }
 
 
