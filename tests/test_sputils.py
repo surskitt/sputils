@@ -281,3 +281,26 @@ def test_collector(mock_cp, mock_ct, mock_ca, sp_mock):
 
     sputils.collector(sp, 'playlists')
     mock_cp.assert_called_once()
+
+
+def test_format_lines(album_dict):
+    expected = 'album\nalbum'
+    lines = sputils.format_lines([album_dict, album_dict], '{name}')
+
+    assert lines == expected
+
+
+@unittest.mock.patch('sputils.sputils.json.dumps')
+@unittest.mock.patch('sputils.sputils.format_lines')
+@unittest.mock.patch('sputils.sputils.yaml.dump')
+def test_formatter(mock_yaml, mock_lines, mock_json, sp_mock):
+    sp = sp_mock.Spotify()
+
+    sputils.formatter(sp, 'json', None)
+    mock_json.assert_called_once()
+
+    sputils.formatter(sp, 'lines', None)
+    mock_lines.assert_called_once()
+
+    sputils.formatter(sp, 'yaml', None)
+    mock_yaml.assert_called_once()

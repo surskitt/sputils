@@ -174,6 +174,10 @@ def format_dict(d, format_string):
     return format_string.format(**d)
 
 
+def format_lines(items, line_format):
+    return '\n'.join(format_dict(line, line_format) for line in items)
+
+
 def collector(sp, item_type):
     if item_type == 'albums':
         return collect_albums(sp)
@@ -181,6 +185,15 @@ def collector(sp, item_type):
         return collect_tracks(sp)
     if item_type == 'playlists':
         return collect_playlists(sp)
+
+
+def formatter(items, output_format, line_format):
+    if output_format == 'json':
+        return json.dumps(items, indent=4)
+    if output_format == 'lines':
+        return format_lines(items, line_format)
+    if output_format == 'yaml':
+        return yaml.dump(items)
 
 
 def main():
