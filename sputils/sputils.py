@@ -88,6 +88,14 @@ def album_to_dict(api_album):
     }
 
 
+def playlist_to_dict(api_playlist):
+    return {
+        'name': api_playlist['name'],
+        'uri': api_playlist['uri'],
+        'art_url': api_playlist['images'][0]['url']
+    }
+
+
 def limit_split(lmax, start=0, limit=50):
     return [(limit, offset) for offset in range(start, lmax, limit)]
 
@@ -98,6 +106,14 @@ def get_albums(sp, limit, offset):
     albums = [album_to_dict(a) for a in api_albums['items']]
 
     return albums
+
+
+def get_playlists(sp, limit, offset):
+    api_playlists = sp.current_user_playlists(limit, offset)
+
+    playlists = [playlist_to_dict(p) for p in api_playlists['items']]
+
+    return playlists
 
 
 def collect_albums(sp, limit=50, workers=50):
