@@ -194,12 +194,7 @@ def main():
 
     sp = get_spotify_client(args.user, args.client_id, args.client_secret)
 
-    if args.action == 'albums':
-        items = collect_albums(sp)
-    elif args.action == 'tracks':
-        items = collect_tracks(sp)
-    elif args.action == 'playlists':
-        items = collect_playlists(sp)
+    items = collector(sp, args.action)
 
     if args.format == 'json':
         output = json.dumps(items, indent=4)
