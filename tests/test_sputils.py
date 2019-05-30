@@ -139,9 +139,14 @@ def test_limit_split():
 
 @pytest.fixture
 @unittest.mock.patch('sputils.sputils.spotipy')
-def sp_mock(sp_mock, api_album):
+def sp_mock(sp_mock, api_album, api_playlist):
     sp_mock.Spotify.return_value.current_user_saved_albums.return_value = {
         'items': [api_album],
+        'total': 2
+    }
+
+    sp_mock.Spotify.return_value.current_user_playlists.return_value = {
+        'items': [api_playlist],
         'total': 2
     }
 
@@ -216,3 +221,36 @@ def test_parse_args_user_args(required_args):
     assert args.user == 'testuser'
     assert args.client_id == 'a'
     assert args.client_secret == 'b'
+
+
+@pytest.fixture
+def api_playlist():
+    return {
+        'images': [{'url': 'playlist_img_url'}],
+        'name': 'playlist',
+        'uri': 'playlist_uri'
+    }
+
+
+@pytest.fixture
+def playlist_dict():
+    return {
+        'name': 'playlist',
+        'uri': 'playlist_uri',
+        'art_url': 'playlist_img_url'
+    }
+
+
+def test_playlist_to_dict(api_playlist, playlist_dict):
+    playlist = sputils.playlist_to_dict(api_playlist)
+
+    assert deepdiff.DeepDiff(playlist, playlist_dict) == {}
+
+
+def test_get_playlists(sp_mock, playlist_dict):
+    expected = [playlist_dict]
+
+    sp = sp_mock.Spotify()
+    playlists = sputils.get_playlists(sp, 1, 0)
+
+    assert deepdiff.DeepDiff(playlists, expected) == {}
