@@ -44,9 +44,10 @@ Install
 sputils can be installed using:
 
 * pip_
-* AUR
+* AUR_
 
 .. _pip: https://pypi.org/project/spotify-sputils/
+.. _AUR: https://aur.archlinux.org/packages/python-sputils/
 
 **Note:** The spotipy package has a problem actually installing the new version, mentioned in this issue_. After installing sputils from pip, you will need to run:
 
