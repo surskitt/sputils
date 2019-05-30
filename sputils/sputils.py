@@ -174,6 +174,15 @@ def format_dict(d, format_string):
     return format_string.format(**d)
 
 
+def collector(sp, item_type):
+    if item_type == 'albums':
+        return collect_albums(sp)
+    if item_type == 'tracks':
+        return collect_tracks(sp)
+    if item_type == 'playlists':
+        return collect_playlists(sp)
+
+
 def main():
     args = parse_args(sys.argv[1:])
 

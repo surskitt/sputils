@@ -265,3 +265,19 @@ def test_collect_playlists(sp_mock, playlist_dict):
     playlists = sputils.collect_playlists(sp, 1)
 
     assert deepdiff.DeepDiff(playlists, expected) == {}
+
+
+@unittest.mock.patch('sputils.sputils.collect_albums')
+@unittest.mock.patch('sputils.sputils.collect_tracks')
+@unittest.mock.patch('sputils.sputils.collect_playlists')
+def test_collector(mock_cp, mock_ct, mock_ca, sp_mock):
+    sp = sp_mock.Spotify()
+
+    sputils.collector(sp, 'albums')
+    mock_ca.assert_called_once()
+
+    sputils.collector(sp, 'tracks')
+    mock_ct.assert_called_once()
+
+    sputils.collector(sp, 'playlists')
+    mock_cp.assert_called_once()
