@@ -151,6 +151,24 @@ def collect_tracks(sp, limit=50, workers=50):
     return tracks
 
 
+def collect_playlists(sp, limit=50, workers=50):
+    total_playlists = sp.current_user_playlists(1)['total']
+
+    args = limit_split(total_playlists, 0, limit)
+
+    def collector_helper(sp):
+        def f(args):
+            return get_playlists(sp, *args)
+        return f
+
+    helper = collector_helper(sp)
+    with concurrent.futures.ThreadPoolExecutor(workers) as executor:
+        playlist_map = executor.map(helper, args)
+
+    playlists = [i for s in playlist_map for i in s]
+    return playlists
+
+
 def format_dict(d, format_string):
     return format_string.format(**d)
 
