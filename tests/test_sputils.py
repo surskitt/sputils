@@ -254,3 +254,12 @@ def test_get_playlists(sp_mock, playlist_dict):
     playlists = sputils.get_playlists(sp, 1, 0)
 
     assert deepdiff.DeepDiff(playlists, expected) == {}
+
+
+def test_collect_playlists(sp_mock, playlist_dict):
+    expected = [playlist_dict, playlist_dict]
+
+    sp = sp_mock.Spotify()
+    playlists = sputils.collect_playlists(sp, 1)
+
+    assert deepdiff.DeepDiff(playlists, expected) == {}
