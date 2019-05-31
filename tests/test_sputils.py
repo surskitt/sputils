@@ -75,7 +75,7 @@ def track_dict():
 
 
 @pytest.fixture
-def api_album():
+def api_album_collected():
     return {
         'added_at': 'mtime',
         'album': {
@@ -99,7 +99,7 @@ def api_album():
 
 
 @pytest.fixture
-def album_dict():
+def album_dict_collected():
     return {
         'artist': 'artist1, artist2',
         'name': 'album',
@@ -117,16 +117,38 @@ def album_dict():
     }
 
 
+@pytest.fixture
+def api_album_searched():
+    return {
+        'album': {
+            'artists': [{'name': 'artist1'}, {'name': 'artist2'}],
+            'name': 'album',
+            'uri': 'uri',
+            'images': [{'url': 'art_url'}]
+        }
+    }
+
+
+@pytest.fixture
+def album_dict_searched():
+    return {
+        'artist': 'artist1, artist2',
+        'name': 'album',
+        'uri': 'uri',
+        'art_url': 'art_url'
+    }
+
+
 def test_track_to_dict(api_track, track_dict):
     track = sputils.track_to_dict(api_track)
 
     assert deepdiff.DeepDiff(track, track_dict) == {}
 
 
-def test_album_to_dict(api_album, album_dict):
-    album = sputils.album_to_dict(api_album)
+def test_album_to_dict_collect(api_album_collected, album_dict_collected):
+    album = sputils.album_to_dict_collect(api_album_collected)
 
-    assert deepdiff.DeepDiff(album, album_dict) == {}
+    assert deepdiff.DeepDiff(album, album_dict_collected) == {}
 
 
 def test_limit_split():
@@ -139,9 +161,9 @@ def test_limit_split():
 
 @pytest.fixture
 @unittest.mock.patch('sputils.sputils.spotipy')
-def sp_mock(sp_mock, api_album, api_playlist):
+def sp_mock(sp_mock, api_album_collected, api_playlist):
     sp_mock.Spotify.return_value.current_user_saved_albums.return_value = {
-        'items': [api_album],
+        'items': [api_album_collected],
         'total': 2
     }
 
@@ -150,28 +172,34 @@ def sp_mock(sp_mock, api_album, api_playlist):
         'total': 2
     }
 
+    sp_mock.Spotify.return_value.search.return_value = {
+        'albums': {
+            'items': [api_album_collected['album']]
+        }
+    }
+
     return sp_mock
 
 
-def test_get_albums(sp_mock, album_dict):
-    expected = [album_dict]
+def test_collect_albums(sp_mock, album_dict_collected):
+    expected = [album_dict_collected]
 
     sp = sp_mock.Spotify()
-    albums = sputils.get_albums(sp, 1, 0)
+    albums = sputils.collect_albums(sp, 1, 0)
 
     assert deepdiff.DeepDiff(albums, expected) == {}
 
 
-def test_collect_albums(sp_mock, album_dict):
-    expected = [album_dict, album_dict]
+def test_collect_all_albums(sp_mock, album_dict_collected):
+    expected = [album_dict_collected, album_dict_collected]
 
     sp = sp_mock.Spotify()
-    albums = sputils.collect_albums(sp, 1)
+    albums = sputils.collect_all_albums(sp, 1)
 
     assert deepdiff.DeepDiff(albums, expected) == {}
 
 
-def test_collect_tracks(sp_mock, track_dict):
+def test_collect_all_tracks(sp_mock, track_dict):
     ad = {
         'albumartist': 'artist1, artist2',
         'album': 'album',
@@ -183,15 +211,15 @@ def test_collect_tracks(sp_mock, track_dict):
     expected = [td, td]
 
     sp = sp_mock.Spotify()
-    tracks = sputils.collect_tracks(sp, 1)
+    tracks = sputils.collect_all_tracks(sp, 1)
 
     assert deepdiff.DeepDiff(tracks, expected) == {}
 
 
-def test_format_dict(album_dict):
+def test_format_dict(album_dict_collected):
     format_string = '{artist} - {name}'
     expected = 'artist1, artist2 - album'
-    formatted = sputils.format_dict(album_dict, format_string)
+    formatted = sputils.format_dict(album_dict_collected, format_string)
 
     assert formatted == expected
 
@@ -208,7 +236,14 @@ def test_parse_args_format(f, required_args):
     assert args.format == f
 
 
-@pytest.mark.parametrize('a', ['albums', 'tracks'])
+@pytest.mark.parametrize('r', ['albums', 'tracks'])
+def test_parse_args_resource(r, required_args):
+    args = sputils.parse_args(f'--resource {r} {required_args}')
+
+    assert args.resource == r
+
+
+@pytest.mark.parametrize('a', ['collect'])
 def test_parse_args_action(a, required_args):
     args = sputils.parse_args(f'--action {a} {required_args}')
 
@@ -249,27 +284,27 @@ def test_playlist_to_dict(api_playlist, playlist_dict):
     assert deepdiff.DeepDiff(playlist, playlist_dict) == {}
 
 
-def test_get_playlists(sp_mock, playlist_dict):
+def test_collect_playlists(sp_mock, playlist_dict):
     expected = [playlist_dict]
 
     sp = sp_mock.Spotify()
-    playlists = sputils.get_playlists(sp, 1, 0)
+    playlists = sputils.collect_playlists(sp, 1, 0)
 
     assert deepdiff.DeepDiff(playlists, expected) == {}
 
 
-def test_collect_playlists(sp_mock, playlist_dict):
+def test_collect_all_playlists(sp_mock, playlist_dict):
     expected = [playlist_dict, playlist_dict]
 
     sp = sp_mock.Spotify()
-    playlists = sputils.collect_playlists(sp, 1)
+    playlists = sputils.collect_all_playlists(sp, 1)
 
     assert deepdiff.DeepDiff(playlists, expected) == {}
 
 
-@unittest.mock.patch('sputils.sputils.collect_albums')
-@unittest.mock.patch('sputils.sputils.collect_tracks')
-@unittest.mock.patch('sputils.sputils.collect_playlists')
+@unittest.mock.patch('sputils.sputils.collect_all_albums')
+@unittest.mock.patch('sputils.sputils.collect_all_tracks')
+@unittest.mock.patch('sputils.sputils.collect_all_playlists')
 def test_collector(mock_cp, mock_ct, mock_ca, sp_mock):
     sp = sp_mock.Spotify()
 
@@ -283,9 +318,10 @@ def test_collector(mock_cp, mock_ct, mock_ca, sp_mock):
     mock_cp.assert_called_once()
 
 
-def test_format_lines(album_dict):
+def test_format_lines(album_dict_collected):
     expected = 'album\nalbum'
-    lines = sputils.format_lines([album_dict, album_dict], '{name}')
+    albums = [album_dict_collected, album_dict_collected]
+    lines = sputils.format_lines(albums, '{name}')
 
     assert lines == expected
 
@@ -304,3 +340,21 @@ def test_formatter(mock_yaml, mock_lines, mock_json, sp_mock):
 
     sputils.formatter(sp, 'yaml', None)
     mock_yaml.assert_called_once()
+
+
+def test_search_album(sp_mock, api_album_searched, album_dict_searched):
+    sp = sp_mock.Spotify()
+
+    expected = [album_dict_searched]
+
+    search = sputils.search_albums(sp, 'test')
+
+    assert deepdiff.DeepDiff(search, expected) == {}
+
+
+@unittest.mock.patch('sputils.sputils.search_albums')
+def test_searcher(mock_sa, sp_mock):
+    sp = sp_mock.Spotify()
+
+    sputils.searcher(sp, 'test', 'albums')
+    mock_sa.assert_called_once()
