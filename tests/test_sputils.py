@@ -208,11 +208,11 @@ def test_parse_args_format(f, required_args):
     assert args.format == f
 
 
-@pytest.mark.parametrize('a', ['albums', 'tracks'])
-def test_parse_args_action(a, required_args):
-    args = sputils.parse_args(f'--action {a} {required_args}')
+@pytest.mark.parametrize('r', ['albums', 'tracks'])
+def test_parse_args_resource(r, required_args):
+    args = sputils.parse_args(f'--resource {r} {required_args}')
 
-    assert args.action == a
+    assert args.resource == r
 
 
 def test_parse_args_user_args(required_args):

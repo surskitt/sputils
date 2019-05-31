@@ -29,8 +29,8 @@ def parse_args(args):
                help='spotify client secret')
 
     actions = ['albums', 'tracks', 'playlists']
-    parser.add('-a', '--action', choices=actions, default='albums',
-               help='action to perform')
+    parser.add('-r', '--resource', choices=actions, default='albums',
+               help='resource to query')
 
     format_choices = ['json', 'lines', 'yaml']
     parser.add('-f', '--format', choices=format_choices, default='json',
@@ -178,12 +178,12 @@ def format_lines(items, line_format):
     return '\n'.join(format_dict(line, line_format) for line in items)
 
 
-def collector(sp, item_type):
-    if item_type == 'albums':
+def collector(sp, resource):
+    if resource == 'albums':
         return collect_albums(sp)
-    if item_type == 'tracks':
+    if resource == 'tracks':
         return collect_tracks(sp)
-    if item_type == 'playlists':
+    if resource == 'playlists':
         return collect_playlists(sp)
 
 
@@ -207,5 +207,6 @@ def main():
 
     sp = get_spotify_client(args.user, args.client_id, args.client_secret)
 
-    items = collector(sp, args.action)
-    print(formatter(items, args.format, args.line_format))
+    items = collector(sp, args.resource)
+    out = formatter(items, args.format, args.line_format)
+    print(out)
