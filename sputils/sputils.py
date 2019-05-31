@@ -56,6 +56,9 @@ def parse_args(args):
     parser.add('-l', '--line_format', default='{name}', type=str,
                help='format for outputting lines, accepts json keys')
 
+    query_help = 'query (valid for search, add, delete, reccomend and follow)'
+    parser.add('query', nargs='*', default=[], help=query_help)
+
     return parser.parse_args(args)
 
 
@@ -224,9 +227,14 @@ def formatter(items, output_format, line_format):
 
 
 def search_albums(sp, qry):
-    search = sp.search(qry, type='album')
+    search = sp.search(qry, type='album', limit=50)
 
     return [album_to_dict_common(a) for a in search['albums']['items']]
+
+
+def searcher(sp, qry, resource):
+    if resource == 'albums':
+        return search_albums(sp, qry)
 
 
 def main():
@@ -242,6 +250,10 @@ def main():
 
     if args.action == 'collect':
         items = collector(sp, args.resource)
+    elif args.action == 'search':
+        qry = ' '.join(args.query)
+        items = searcher(sp, qry, args.resource)
 
+    if args.action in ['collect', 'search']:
         out = formatter(items, args.format, args.line_format)
         print(out)
