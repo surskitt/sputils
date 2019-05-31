@@ -258,6 +258,13 @@ def test_parse_args_user_args(required_args):
     assert args.client_secret == 'b'
 
 
+def test_parse_args_no_query(required_args):
+    exception_msg = 'error: a query is needed for this action'
+    with pytest.raises(SystemExit, message=exception_msg) as e:
+        sputils.parse_args(f'-a search {required_args}')
+    assert e.value.code == 2
+
+
 @pytest.fixture
 def api_playlist():
     return {
