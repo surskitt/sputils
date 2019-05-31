@@ -46,14 +46,14 @@ def parse_args(args):
     parser.add('-a', '--action', choices=actions, default='collect',
                help=textwrap.dedent(actions_desc))
 
-    resources = ['albums', 'tracks', 'playlists']
+    resources = ['artists', 'albums', 'tracks', 'playlists']
     parser.add('-r', '--resource', choices=resources, default='albums',
                help='resource to query')
 
     format_choices = ['json', 'lines', 'yaml']
     parser.add('-f', '--format', choices=format_choices, default='json',
                help='output format')
-    parser.add('-l', '--line_format', default='{artist} - {name}', type=str,
+    parser.add('-l', '--line_format', default='{name}', type=str,
                help='format for outputting lines, accepts json keys')
 
     return parser.parse_args(args)
@@ -94,16 +94,25 @@ def track_to_dict(api_track):
     }
 
 
-def album_to_dict(api_album):
+def album_to_dict_common(api_album):
     return {
         'artist': ', '.join(a['name'] for a in api_album['album']['artists']),
         'name': api_album['album']['name'],
-        'added': api_album['added_at'],
-        'tracks': [track_to_dict(t)
-                   for t in api_album['album']['tracks']['items']],
         'uri': api_album['album']['uri'],
         'art_url': api_album['album']['images'][0]['url']
     }
+
+
+def album_to_dict_collect(api_album):
+    common = album_to_dict_common(api_album)
+
+    collected = {
+        'added': api_album['added_at'],
+        'tracks': [track_to_dict(t)
+                   for t in api_album['album']['tracks']['items']],
+    }
+
+    return {**common, **collected}
 
 
 def playlist_to_dict(api_playlist):
@@ -119,15 +128,15 @@ def limit_split(lmax, start=0, limit=50):
     return [(limit, offset) for offset in range(start, lmax, limit)]
 
 
-def get_albums(sp, limit, offset):
+def collect_albums(sp, limit, offset):
     api_albums = sp.current_user_saved_albums(limit, offset)
 
-    albums = [album_to_dict(a) for a in api_albums['items']]
+    albums = [album_to_dict_collect(a) for a in api_albums['items']]
 
     return albums
 
 
-def get_playlists(sp, limit, offset):
+def collect_playlists(sp, limit, offset):
     api_playlists = sp.current_user_playlists(limit, offset)
 
     playlists = [playlist_to_dict(p) for p in api_playlists['items']]
@@ -135,14 +144,14 @@ def get_playlists(sp, limit, offset):
     return playlists
 
 
-def collect_albums(sp, limit=50, workers=50):
+def collect_all_albums(sp, limit=50, workers=50):
     total_albums = sp.current_user_saved_albums(1)['total']
 
     args = limit_split(total_albums, 0, limit)
 
     def collector_helper(sp):
         def f(args):
-            return get_albums(sp, *args)
+            return collect_albums(sp, *args)
         return f
 
     helper = collector_helper(sp)
@@ -153,8 +162,8 @@ def collect_albums(sp, limit=50, workers=50):
     return sorted(albums, key=lambda x: x['added'], reverse=True)
 
 
-def collect_tracks(sp, limit=50, workers=50):
-    albums = collect_albums(sp, limit, workers)
+def collect_all_tracks(sp, limit=50, workers=50):
+    albums = collect_all_albums(sp, limit, workers)
 
     def album_tracks(album):
         album_dict = {
@@ -170,14 +179,14 @@ def collect_tracks(sp, limit=50, workers=50):
     return tracks
 
 
-def collect_playlists(sp, limit=50, workers=50):
+def collect_all_playlists(sp, limit=50, workers=50):
     total_playlists = sp.current_user_playlists(1)['total']
 
     args = limit_split(total_playlists, 0, limit)
 
     def collector_helper(sp):
         def f(args):
-            return get_playlists(sp, *args)
+            return collect_playlists(sp, *args)
         return f
 
     helper = collector_helper(sp)
@@ -198,11 +207,11 @@ def format_lines(items, line_format):
 
 def collector(sp, resource):
     if resource == 'albums':
-        return collect_albums(sp)
+        return collect_all_albums(sp)
     if resource == 'tracks':
-        return collect_tracks(sp)
+        return collect_all_tracks(sp)
     if resource == 'playlists':
-        return collect_playlists(sp)
+        return collect_all_playlists(sp)
 
 
 def formatter(items, output_format, line_format):

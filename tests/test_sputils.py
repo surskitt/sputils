@@ -123,8 +123,8 @@ def test_track_to_dict(api_track, track_dict):
     assert deepdiff.DeepDiff(track, track_dict) == {}
 
 
-def test_album_to_dict(api_album, album_dict):
-    album = sputils.album_to_dict(api_album)
+def test_album_to_dict_collect(api_album, album_dict):
+    album = sputils.album_to_dict_collect(api_album)
 
     assert deepdiff.DeepDiff(album, album_dict) == {}
 
@@ -153,25 +153,25 @@ def sp_mock(sp_mock, api_album, api_playlist):
     return sp_mock
 
 
-def test_get_albums(sp_mock, album_dict):
+def test_collect_albums(sp_mock, album_dict):
     expected = [album_dict]
 
     sp = sp_mock.Spotify()
-    albums = sputils.get_albums(sp, 1, 0)
+    albums = sputils.collect_albums(sp, 1, 0)
 
     assert deepdiff.DeepDiff(albums, expected) == {}
 
 
-def test_collect_albums(sp_mock, album_dict):
+def test_collect_all_albums(sp_mock, album_dict):
     expected = [album_dict, album_dict]
 
     sp = sp_mock.Spotify()
-    albums = sputils.collect_albums(sp, 1)
+    albums = sputils.collect_all_albums(sp, 1)
 
     assert deepdiff.DeepDiff(albums, expected) == {}
 
 
-def test_collect_tracks(sp_mock, track_dict):
+def test_collect_all_tracks(sp_mock, track_dict):
     ad = {
         'albumartist': 'artist1, artist2',
         'album': 'album',
@@ -183,7 +183,7 @@ def test_collect_tracks(sp_mock, track_dict):
     expected = [td, td]
 
     sp = sp_mock.Spotify()
-    tracks = sputils.collect_tracks(sp, 1)
+    tracks = sputils.collect_all_tracks(sp, 1)
 
     assert deepdiff.DeepDiff(tracks, expected) == {}
 
@@ -256,27 +256,27 @@ def test_playlist_to_dict(api_playlist, playlist_dict):
     assert deepdiff.DeepDiff(playlist, playlist_dict) == {}
 
 
-def test_get_playlists(sp_mock, playlist_dict):
+def test_collect_playlists(sp_mock, playlist_dict):
     expected = [playlist_dict]
 
     sp = sp_mock.Spotify()
-    playlists = sputils.get_playlists(sp, 1, 0)
+    playlists = sputils.collect_playlists(sp, 1, 0)
 
     assert deepdiff.DeepDiff(playlists, expected) == {}
 
 
-def test_collect_playlists(sp_mock, playlist_dict):
+def test_collect_all_playlists(sp_mock, playlist_dict):
     expected = [playlist_dict, playlist_dict]
 
     sp = sp_mock.Spotify()
-    playlists = sputils.collect_playlists(sp, 1)
+    playlists = sputils.collect_all_playlists(sp, 1)
 
     assert deepdiff.DeepDiff(playlists, expected) == {}
 
 
-@unittest.mock.patch('sputils.sputils.collect_albums')
-@unittest.mock.patch('sputils.sputils.collect_tracks')
-@unittest.mock.patch('sputils.sputils.collect_playlists')
+@unittest.mock.patch('sputils.sputils.collect_all_albums')
+@unittest.mock.patch('sputils.sputils.collect_all_tracks')
+@unittest.mock.patch('sputils.sputils.collect_all_playlists')
 def test_collector(mock_cp, mock_ct, mock_ca, sp_mock):
     sp = sp_mock.Spotify()
 
