@@ -96,15 +96,15 @@ def track_to_dict(api_track):
 
 def album_to_dict_common(api_album):
     return {
-        'artist': ', '.join(a['name'] for a in api_album['album']['artists']),
-        'name': api_album['album']['name'],
-        'uri': api_album['album']['uri'],
-        'art_url': api_album['album']['images'][0]['url']
+        'artist': ', '.join(a['name'] for a in api_album['artists']),
+        'name': api_album['name'],
+        'uri': api_album['uri'],
+        'art_url': api_album['images'][0]['url']
     }
 
 
 def album_to_dict_collect(api_album):
-    common = album_to_dict_common(api_album)
+    common = album_to_dict_common(api_album['album'])
 
     collected = {
         'added': api_album['added_at'],
@@ -221,6 +221,10 @@ def formatter(items, output_format, line_format):
         return format_lines(items, line_format)
     if output_format == 'yaml':
         return yaml.dump(items)
+
+
+def search_album(sp, qry):
+    pass
 
 
 def main():
