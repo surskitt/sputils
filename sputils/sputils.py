@@ -223,8 +223,10 @@ def formatter(items, output_format, line_format):
         return yaml.dump(items)
 
 
-def search_album(sp, qry):
-    pass
+def search_albums(sp, qry):
+    search = sp.search(qry, type='album')
+
+    return [album_to_dict_common(a) for a in search['albums']['items']]
 
 
 def main():
