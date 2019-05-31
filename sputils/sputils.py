@@ -7,7 +7,7 @@ import sys
 import concurrent.futures
 import textwrap
 import json
-from argparse import RawTextHelpFormatter
+from argparse import RawTextHelpFormatter, ArgumentError
 
 import spotipy
 import spotipy.util
@@ -57,9 +57,15 @@ def parse_args(args):
                help='format for outputting lines, accepts json keys')
 
     query_help = 'query (valid for search, add, delete, reccomend and follow)'
-    parser.add('query', nargs='*', default=[], help=query_help)
+    parser.add('query', nargs='*', help=query_help)
 
-    return parser.parse_args(args)
+    args = parser.parse_args(args)
+
+    if args.action in ['search', 'query', 'save', 'delete', 'reccomend',
+                       'follow'] and args.query == []:
+        parser.error('a query is needed for this action')
+
+    return args
 
 
 def get_api_dict(user, client_id, client_secret):
