@@ -215,6 +215,13 @@ def test_parse_args_resource(r, required_args):
     assert args.resource == r
 
 
+@pytest.mark.parametrize('a', ['collect'])
+def test_parse_args_action(a, required_args):
+    args = sputils.parse_args(f'--action {a} {required_args}')
+
+    assert args.action == a
+
+
 def test_parse_args_user_args(required_args):
     args = sputils.parse_args(required_args)
 

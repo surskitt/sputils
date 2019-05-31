@@ -28,6 +28,10 @@ def parse_args(args):
     parser.add('--client_secret', type=str, required=True,
                help='spotify client secret')
 
+    actions = ['collect']
+    parser.add('-a', '--action', choices=actions, default='collect',
+               help='action to perform')
+
     resources = ['albums', 'tracks', 'playlists']
     parser.add('-r', '--resource', choices=resources, default='albums',
                help='resource to query')
