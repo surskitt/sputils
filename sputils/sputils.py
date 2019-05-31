@@ -5,7 +5,9 @@
 import os
 import sys
 import concurrent.futures
+import textwrap
 import json
+from argparse import RawTextHelpFormatter
 
 import spotipy
 import spotipy.util
@@ -17,7 +19,8 @@ def parse_args(args):
     desc = 'A collection of spotify utilities for use with other shell utils.'
     cfgfiles = ['/etc/sputils.d/*.conf', '~/.config/sputils/*.conf']
     parser = configargparse.ArgParser(default_config_files=cfgfiles,
-                                      description=desc)
+                                      description=desc,
+                                      formatter_class=RawTextHelpFormatter)
     parser.add('-c', '--config', is_config_file=True,
                help='config file path')
 
@@ -28,9 +31,20 @@ def parse_args(args):
     parser.add('--client_secret', type=str, required=True,
                help='spotify client secret')
 
-    actions = ['collect']
+    actions = ['collect', 'search', 'query', 'save', 'delete', 'reccomend',
+               'follow', 'following']
+    actions_desc = '''\
+                   collect: collect resources from saved collection
+                   search: search spotify for resources
+                   query: query a set of resource on their uris
+                   add: add resource to collection
+                   delete: delete resource from collection
+                   reccomend: return reccomendations based on given uris
+                   follow: follow artist
+                   following: query resources based on followed artists
+                   '''
     parser.add('-a', '--action', choices=actions, default='collect',
-               help='action to perform')
+               help=textwrap.dedent(actions_desc))
 
     resources = ['albums', 'tracks', 'playlists']
     parser.add('-r', '--resource', choices=resources, default='albums',
@@ -214,5 +228,5 @@ def main():
     if args.action == 'collect':
         items = collector(sp, args.resource)
 
-    out = formatter(items, args.format, args.line_format)
-    print(out)
+        out = formatter(items, args.format, args.line_format)
+        print(out)
