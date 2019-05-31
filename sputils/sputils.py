@@ -211,6 +211,8 @@ def main():
 
     sp = get_spotify_client(args.user, args.client_id, args.client_secret)
 
-    items = collector(sp, args.resource)
+    if args.action == 'collect':
+        items = collector(sp, args.resource)
+
     out = formatter(items, args.format, args.line_format)
     print(out)
