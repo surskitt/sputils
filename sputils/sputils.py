@@ -28,8 +28,8 @@ def parse_args(args):
     parser.add('--client_secret', type=str, required=True,
                help='spotify client secret')
 
-    actions = ['albums', 'tracks', 'playlists']
-    parser.add('-r', '--resource', choices=actions, default='albums',
+    resources = ['albums', 'tracks', 'playlists']
+    parser.add('-r', '--resource', choices=resources, default='albums',
                help='resource to query')
 
     format_choices = ['json', 'lines', 'yaml']
