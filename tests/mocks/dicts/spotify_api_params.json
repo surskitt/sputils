@@ -1,0 +1,8 @@
+{
+    "username": "testuser",
+    "client_id": "test_client_id",
+    "client_secret": "test_client_secret",
+    "redirect_uri": "http://localhost",
+    "scope": "user-library-read",
+    "cache_path": "/home/test/.cache/sputils/user_cache"
+}

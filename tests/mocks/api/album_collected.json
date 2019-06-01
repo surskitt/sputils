@@ -1,0 +1,20 @@
+{
+    "added_at": "mtime",
+    "album": {
+        "artists": [{"name": "artist1"}, {"name": "artist2"}],
+        "name": "album",
+        "tracks": {
+            "items": [
+                {
+                    "artists": [{"name": "artist1"}, {"name": "artist2"}],
+                    "track_number": 1,
+                    "disc_number": 1,
+                    "name": "track",
+                    "uri": "uri"
+                }
+            ]
+        },
+        "uri": "uri",
+        "images": [{"url": "art_url"}]
+    }
+}

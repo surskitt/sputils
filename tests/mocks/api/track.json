@@ -1,0 +1,14 @@
+{
+    "artists": [
+        {
+            "name": "artist1"
+        }, 
+        {
+            "name": "artist2"
+        }
+    ],
+    "track_number": 1,
+    "disc_number": 1,
+    "name": "track",
+    "uri": "uri"
+}
