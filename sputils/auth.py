@@ -1,6 +1,7 @@
 import os
 
 import spotipy
+import spotipy.util
 
 
 def get_api_dict(user, client_id, client_secret):
