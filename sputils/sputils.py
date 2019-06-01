@@ -7,7 +7,7 @@ import sys
 import concurrent.futures
 import textwrap
 import json
-from argparse import RawTextHelpFormatter, ArgumentError
+from argparse import RawTextHelpFormatter
 
 import spotipy
 import spotipy.util
