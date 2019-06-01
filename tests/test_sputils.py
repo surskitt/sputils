@@ -13,60 +13,52 @@ import deepdiff
 
 from sputils import sputils
 
-
-def rel_fn(fn):
-    dir_name = os.path.dirname(os.path.realpath(__file__))
-    return os.path.join(dir_name, fn)
-
-
-def mock_json(fn):
-    with open(rel_fn(fn)) as f:
-        return json.load(f)
+import helpers
 
 
 @pytest.fixture
 def api_track():
-    return mock_json('mocks/api/track.json')
+    return helpers.mock_json('mocks/api/track.json')
 
 
 @pytest.fixture
 def track_dict():
-    return mock_json('mocks/dicts/track.json')
+    return helpers.mock_json('mocks/dicts/track.json')
 
 
 @pytest.fixture
 def album_dict_common():
-    return mock_json('mocks/dicts/album_common.json')
+    return helpers.mock_json('mocks/dicts/album_common.json')
 
 
 @pytest.fixture
 def api_album_collected():
-    return mock_json('mocks/api/album_collected.json')
+    return helpers.mock_json('mocks/api/album_collected.json')
 
 
 @pytest.fixture
 def album_dict_collected():
-    return mock_json('mocks/dicts/album_collected.json')
+    return helpers.mock_json('mocks/dicts/album_collected.json')
 
 
 @pytest.fixture
 def api_album_searched():
-    return mock_json('mocks/api/album_searched.json')
+    return helpers.mock_json('mocks/api/album_searched.json')
 
 
 @pytest.fixture
 def album_dict_searched():
-    return mock_json('mocks/dicts/album_searched.json')
+    return helpers.mock_json('mocks/dicts/album_searched.json')
 
 
 @pytest.fixture
 def api_playlist():
-    return mock_json('mocks/api/playlist.json')
+    return helpers.mock_json('mocks/api/playlist.json')
 
 
 @pytest.fixture
 def playlist_dict():
-    return mock_json('mocks/dicts/playlist.json')
+    return helpers.mock_json('mocks/dicts/playlist.json')
 
 
 @unittest.mock.patch('sputils.sputils.os')
@@ -75,7 +67,7 @@ def test_get_api_dict(mock_os):
         return x.replace('~', '/home/test')
     mock_os.path.expanduser.side_effect = mock_os_lambda
 
-    expected = mock_json('mocks/dicts/spotify_api_params.json')
+    expected = helpers.mock_json('mocks/dicts/spotify_api_params.json')
 
     api_dict_params = ('testuser', 'test_client_id', 'test_client_secret')
     api_dict = sputils.get_api_dict(*api_dict_params)
