@@ -24,11 +24,6 @@ def test_format_dict(album_dict_collected):
     assert formatted == expected
 
 
-@pytest.fixture
-def required_args():
-    return '--user testuser --client_id a --client_secret b'
-
-
 @pytest.mark.parametrize('f', ['json', 'lines', 'yaml'])
 def test_parse_args_format(f, required_args):
     args = sputils.parse_args(f'--format {f} {required_args}')
