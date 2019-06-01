@@ -112,7 +112,7 @@ def album_to_dict_common(api_album):
     }
 
 
-def album_to_dict_collect(api_album):
+def album_to_dict_collected(api_album):
     common = album_to_dict_common(api_album['album'])
 
     collected = {
@@ -140,7 +140,7 @@ def limit_split(lmax, start=0, limit=50):
 def collect_albums(sp, limit, offset):
     api_albums = sp.current_user_saved_albums(limit, offset)
 
-    albums = [album_to_dict_collect(a) for a in api_albums['items']]
+    albums = [album_to_dict_collected(a) for a in api_albums['items']]
 
     return albums
 
@@ -232,10 +232,14 @@ def formatter(items, output_format, line_format):
         return yaml.dump(items)
 
 
+def album_to_dict_searched(api_dict):
+    return album_to_dict_common(api_dict)
+
+
 def search_albums(sp, qry):
     search = sp.search(qry, type='album', limit=50)
 
-    return [album_to_dict_common(a) for a in search['albums']['items']]
+    return [album_to_dict_searched(a) for a in search['albums']['items']]
 
 
 def searcher(sp, qry, resource):
