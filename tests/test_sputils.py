@@ -6,10 +6,62 @@
 import pytest
 import unittest.mock
 
+import os
+import json
+
 import deepdiff
 
-
 from sputils import sputils
+
+
+def rel_fn(fn):
+    dir_name = os.path.dirname(os.path.realpath(__file__))
+    return os.path.join(dir_name, fn)
+
+
+def mock_json(fn):
+    with open(rel_fn(fn)) as f:
+        return json.load(f)
+
+
+@pytest.fixture
+def api_track():
+    return mock_json('mocks/api/track.json')
+
+
+@pytest.fixture
+def track_dict():
+    return mock_json('mocks/dicts/track.json')
+
+
+@pytest.fixture
+def api_album_collected():
+    return mock_json('mocks/api/album_collected.json')
+
+
+@pytest.fixture
+def album_dict_collected():
+    return mock_json('mocks/dicts/album_collected.json')
+
+
+@pytest.fixture
+def api_album_searched():
+    return mock_json('mocks/api/album_searched.json')
+
+
+@pytest.fixture
+def album_dict_searched():
+    return mock_json('mocks/dicts/album_searched.json')
+
+
+@pytest.fixture
+def api_playlist():
+    return mock_json('mocks/api/playlist.json')
+
+
+@pytest.fixture
+def playlist_dict():
+    return mock_json('mocks/dicts/playlist.json')
 
 
 @unittest.mock.patch('sputils.sputils.os')
@@ -18,14 +70,7 @@ def test_get_api_dict(mock_os):
         return x.replace('~', '/home/test')
     mock_os.path.expanduser.side_effect = mock_os_lambda
 
-    expected = {
-        'username': 'testuser',
-        'client_id': 'test_client_id',
-        'client_secret': 'test_client_secret',
-        'redirect_uri': 'http://localhost',
-        'scope': 'user-library-read',
-        'cache_path': '/home/test/.cache/sputils/user_cache'
-    }
+    expected = mock_json('mocks/dicts/spotify_api_params.json')
 
     api_dict_params = ('testuser', 'test_client_id', 'test_client_secret')
     api_dict = sputils.get_api_dict(*api_dict_params)
@@ -51,92 +96,6 @@ def test_get_spotify_client_token_failed(spotipy_mock):
     with pytest.raises(RuntimeError, match=exception_msg):
         sp_params = ('testuser', 'test_client_id', 'test_client_secret')
         sputils.get_spotify_client(*sp_params)
-
-
-@pytest.fixture
-def api_track():
-    return {
-        'artists': [{'name': 'artist1'}, {'name': 'artist2'}],
-        'track_number': 1,
-        'disc_number': 1,
-        'name': 'track',
-        'uri': 'uri'
-    }
-
-
-@pytest.fixture
-def track_dict():
-    return {
-        'artist': 'artist1, artist2',
-        'track': 1.01,
-        'name': 'track',
-        'uri': 'uri'
-    }
-
-
-@pytest.fixture
-def api_album_collected():
-    return {
-        'added_at': 'mtime',
-        'album': {
-            'artists': [{'name': 'artist1'}, {'name': 'artist2'}],
-            'name': 'album',
-            'tracks': {
-                'items': [
-                    {
-                        'artists': [{'name': 'artist1'}, {'name': 'artist2'}],
-                        'track_number': 1,
-                        'disc_number': 1,
-                        'name': 'track',
-                        'uri': 'uri'
-                    }
-                ]
-            },
-            'uri': 'uri',
-            'images': [{'url': 'art_url'}]
-        }
-    }
-
-
-@pytest.fixture
-def album_dict_collected():
-    return {
-        'artist': 'artist1, artist2',
-        'name': 'album',
-        'added': 'mtime',
-        'tracks': [
-            {
-                'artist': 'artist1, artist2',
-                'track': 1.01,
-                'name': 'track',
-                'uri': 'uri'
-            }
-        ],
-        'uri': 'uri',
-        'art_url': 'art_url'
-    }
-
-
-@pytest.fixture
-def api_album_searched():
-    return {
-        'album': {
-            'artists': [{'name': 'artist1'}, {'name': 'artist2'}],
-            'name': 'album',
-            'uri': 'uri',
-            'images': [{'url': 'art_url'}]
-        }
-    }
-
-
-@pytest.fixture
-def album_dict_searched():
-    return {
-        'artist': 'artist1, artist2',
-        'name': 'album',
-        'uri': 'uri',
-        'art_url': 'art_url'
-    }
 
 
 def test_track_to_dict(api_track, track_dict):
@@ -263,26 +222,6 @@ def test_parse_args_no_query(required_args):
     with pytest.raises(SystemExit, message=exception_msg) as e:
         sputils.parse_args(f'-a search {required_args}')
     assert e.value.code == 2
-
-
-@pytest.fixture
-def api_playlist():
-    return {
-        'images': [{'url': 'playlist_img_url'}],
-        'name': 'playlist',
-        'uri': 'playlist_uri',
-        'tracks': {'total': 10}
-    }
-
-
-@pytest.fixture
-def playlist_dict():
-    return {
-        'name': 'playlist',
-        'uri': 'playlist_uri',
-        'art_url': 'playlist_img_url',
-        'length': 10
-    }
 
 
 def test_playlist_to_dict(api_playlist, playlist_dict):

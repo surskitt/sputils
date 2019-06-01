@@ -1,0 +1,19 @@
+{
+    "album": {
+        "artists": [
+            {
+                "name": "artist1"
+            },
+            {
+                "name": "artist2"
+            }
+        ],
+        "name": "album",
+        "uri": "uri",
+        "images": [
+            {
+                "url": "art_url"
+            }
+        ]
+    }
+}

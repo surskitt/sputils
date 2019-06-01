@@ -1,0 +1,12 @@
+{
+    "images": [
+        {
+            "url": "playlist_img_url"
+        }
+    ],
+    "name": "playlist",
+    "uri": "playlist_uri",
+    "tracks": {
+        "total": 10
+    }
+}
