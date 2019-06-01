@@ -1,6 +1,29 @@
 import pytest
+import unittest.mock
 
 import helpers
+
+
+@pytest.fixture
+@unittest.mock.patch('sputils.sputils.spotipy')
+def sp_mock(sp_mock, api_album_collected, api_playlist):
+    sp_mock.Spotify.return_value.current_user_saved_albums.return_value = {
+        'items': [api_album_collected],
+        'total': 2
+    }
+
+    sp_mock.Spotify.return_value.current_user_playlists.return_value = {
+        'items': [api_playlist],
+        'total': 2
+    }
+
+    sp_mock.Spotify.return_value.search.return_value = {
+        'albums': {
+            'items': [api_album_collected['album']]
+        }
+    }
+
+    return sp_mock
 
 
 @pytest.fixture
