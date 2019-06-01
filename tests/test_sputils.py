@@ -35,6 +35,11 @@ def track_dict():
 
 
 @pytest.fixture
+def album_dict_common():
+    return mock_json('mocks/dicts/album_common.json')
+
+
+@pytest.fixture
 def api_album_collected():
     return mock_json('mocks/api/album_collected.json')
 
@@ -104,8 +109,14 @@ def test_track_to_dict(api_track, track_dict):
     assert deepdiff.DeepDiff(track, track_dict) == {}
 
 
+def test_album_to_dict_common(api_album_collected, album_dict_common):
+    album = sputils.album_to_dict_common(api_album_collected['album'])
+
+    assert deepdiff.DeepDiff(album, album_dict_common) == {}
+
+
 def test_album_to_dict_collect(api_album_collected, album_dict_collected):
-    album = sputils.album_to_dict_collect(api_album_collected)
+    album = sputils.album_to_dict_collected(api_album_collected)
 
     assert deepdiff.DeepDiff(album, album_dict_collected) == {}
 
