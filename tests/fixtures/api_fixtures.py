@@ -5,7 +5,7 @@ import helpers
 
 
 @pytest.fixture
-@unittest.mock.patch('sputils.sputils.spotipy')
+@unittest.mock.patch('sputils.auth.spotipy')
 def sp_mock(sp_mock, api_album_collected, api_playlist):
     sp_mock.Spotify.return_value.current_user_saved_albums.return_value = {
         'items': [api_album_collected],
