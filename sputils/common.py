@@ -2,7 +2,7 @@ import json
 import yaml
 
 
-def track_to_dict(api_track):
+def track_to_dict_common(api_track):
     return {
         'artist': ', '.join(a['name'] for a in api_track['artists']),
         'track': float('{}.{:02d}'.format(api_track['disc_number'],

@@ -18,8 +18,8 @@ def test_limit_split():
     assert splits == expected
 
 
-def test_track_to_dict(api_track_collected, track_dict_collected):
-    track = common.track_to_dict(api_track_collected)
+def test_track_to_dict_common(api_track_collected, track_dict_collected):
+    track = common.track_to_dict_common(api_track_collected)
 
     assert deepdiff.DeepDiff(track, track_dict_collected) == {}
 

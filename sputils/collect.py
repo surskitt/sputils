@@ -3,12 +3,18 @@ import concurrent.futures
 from . import common
 
 
+def track_to_dict_collected(api_track):
+    common_dict = common.track_to_dict_common(api_track)
+
+    return common_dict
+
+
 def album_to_dict_collected(api_album):
     common_dict = common.album_to_dict_common(api_album['album'])
 
     collected = {
         'added': api_album['added_at'],
-        'tracks': [common.track_to_dict(t)
+        'tracks': [track_to_dict_collected(t)
                    for t in api_album['album']['tracks']['items']],
     }
 
