@@ -1,0 +1,24 @@
+{
+    "artists": [
+        {
+            "name": "artist1"
+        }, 
+        {
+            "name": "artist2"
+        }
+    ],
+    "track_number": 1,
+    "disc_number": 1,
+    "name": "track",
+    "uri": "uri",
+    "album": {
+        "name": "album",
+        "uri": "album_uri",
+        "release_date": "2019-01-01",
+        "images": [
+            {
+                "url": "art_url"
+            }
+        ]
+    }
+}
