@@ -38,8 +38,12 @@ def test_search_track(sp_mock, api_track_searched, track_dict_searched):
 
 
 @unittest.mock.patch('sputils.search.search_albums')
-def test_searcher(mock_sa, sp_mock):
+@unittest.mock.patch('sputils.search.search_tracks')
+def test_searcher(mock_st, mock_sa, sp_mock):
     sp = sp_mock.Spotify()
 
     search.searcher(sp, 'test', 'albums')
     mock_sa.assert_called_once()
+
+    search.searcher(sp, 'test', 'tracks')
+    mock_st.assert_called_once()
