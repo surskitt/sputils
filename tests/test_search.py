@@ -2,11 +2,11 @@ import unittest.mock
 
 import deepdiff
 
-from sputils import sputils
+from sputils import search
 
 
 def test_album_to_dict_searched(api_album_searched, album_dict_searched):
-    album = sputils.album_to_dict_searched(api_album_searched)
+    album = search.album_to_dict_searched(api_album_searched)
 
     assert deepdiff.DeepDiff(album, album_dict_searched) == {}
 
@@ -16,14 +16,14 @@ def test_search_album(sp_mock, api_album_searched, album_dict_searched):
 
     expected = [album_dict_searched]
 
-    search = sputils.search_albums(sp, 'test')
+    searched = search.search_albums(sp, 'test')
 
-    assert deepdiff.DeepDiff(search, expected) == {}
+    assert deepdiff.DeepDiff(searched, expected) == {}
 
 
-@unittest.mock.patch('sputils.sputils.search_albums')
+@unittest.mock.patch('sputils.search.search_albums')
 def test_searcher(mock_sa, sp_mock):
     sp = sp_mock.Spotify()
 
-    sputils.searcher(sp, 'test', 'albums')
+    search.searcher(sp, 'test', 'albums')
     mock_sa.assert_called_once()
