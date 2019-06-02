@@ -33,7 +33,6 @@ def test_parse_args_user_args(required_args):
 
 
 def test_parse_args_no_query(required_args):
-    exception_msg = 'error: a query is needed for this action'
-    with pytest.raises(SystemExit, message=exception_msg) as e:
+    with pytest.raises(SystemExit) as e:
         commandline.parse_args(f'-a search {required_args}')
     assert e.value.code == 2
