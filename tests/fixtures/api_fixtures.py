@@ -28,7 +28,7 @@ def sp_mock(sp_mock, api_album_collected, api_playlist):
 
 @pytest.fixture
 def api_track():
-    return helpers.mock_json('mocks/api/track.json')
+    return helpers.mock_json('mocks/api/track_collected.json')
 
 
 @pytest.fixture

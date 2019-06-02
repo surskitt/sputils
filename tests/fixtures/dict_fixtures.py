@@ -4,8 +4,8 @@ import helpers
 
 
 @pytest.fixture
-def track_dict():
-    return helpers.mock_json('mocks/dicts/track.json')
+def track_dict_collected():
+    return helpers.mock_json('mocks/dicts/track_collected.json')
 
 
 @pytest.fixture

@@ -18,10 +18,10 @@ def test_limit_split():
     assert splits == expected
 
 
-def test_track_to_dict(api_track, track_dict):
+def test_track_to_dict(api_track, track_dict_collected):
     track = common.track_to_dict(api_track)
 
-    assert deepdiff.DeepDiff(track, track_dict) == {}
+    assert deepdiff.DeepDiff(track, track_dict_collected) == {}
 
 
 def test_playlist_to_dict(api_playlist, playlist_dict):
