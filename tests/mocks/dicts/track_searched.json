@@ -1,0 +1,12 @@
+{
+    "artist": "artist1, artist2",
+    "track": 1.01,
+    "name": "track",
+    "uri": "uri",
+    "album": {
+        "name": "album",
+        "uri": "album_uri",
+        "release_date": "2019-01-01",
+        "art_url": "art_url"
+    }
+}

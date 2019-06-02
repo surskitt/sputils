@@ -9,6 +9,11 @@ def track_dict_collected():
 
 
 @pytest.fixture
+def track_dict_searched():
+    return helpers.mock_json('mocks/dicts/track_searched.json')
+
+
+@pytest.fixture
 def album_dict_common():
     return helpers.mock_json('mocks/dicts/album_common.json')
 
