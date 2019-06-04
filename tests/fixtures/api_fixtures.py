@@ -7,7 +7,7 @@ import helpers
 @pytest.fixture
 @unittest.mock.patch('sputils.auth.spotipy')
 def sp_mock(sp_mock, api_album_searched, api_album_collected, api_playlist,
-            api_track_searched):
+            api_track_searched, api_artist_searched):
     sp_mock.Spotify.return_value.current_user_saved_albums.return_value = {
         'items': [api_album_collected],
         'total': 2
@@ -24,6 +24,9 @@ def sp_mock(sp_mock, api_album_searched, api_album_collected, api_playlist,
         },
         'tracks': {
             'items': [api_track_searched]
+        },
+        'artists': {
+            'items': [api_artist_searched]
         }
     }
 
@@ -53,3 +56,8 @@ def api_album_searched():
 @pytest.fixture
 def api_playlist():
     return helpers.mock_json('mocks/api/playlist.json')
+
+
+@pytest.fixture
+def api_artist_searched():
+    return helpers.mock_json('mocks/api/artist_searched.json')

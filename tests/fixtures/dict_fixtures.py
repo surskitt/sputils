@@ -31,3 +31,8 @@ def album_dict_searched():
 @pytest.fixture
 def playlist_dict():
     return helpers.mock_json('mocks/dicts/playlist.json')
+
+
+@pytest.fixture
+def artist_dict_searched():
+    return helpers.mock_json('mocks/dicts/artist_searched.json')
