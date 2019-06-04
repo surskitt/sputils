@@ -43,6 +43,16 @@ def test_search_track(sp_mock, api_track_searched, track_dict_searched):
     assert deepdiff.DeepDiff(searched, expected) == {}
 
 
+def test_search_artist(sp_mock, api_artist_searched, artist_dict_searched):
+    sp = sp_mock.Spotify()
+
+    expected = [artist_dict_searched]
+
+    searched = search.search_artist(sp, 'test')
+
+    assert deepdiff.DeepDiff(searched, expected) == {}
+
+
 @unittest.mock.patch('sputils.search.search_albums')
 @unittest.mock.patch('sputils.search.search_tracks')
 def test_searcher(mock_st, mock_sa, sp_mock):

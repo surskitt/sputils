@@ -39,6 +39,12 @@ def artist_to_dict_searched(api_dict):
     }
 
 
+def search_artist(sp, qry):
+    searched = sp.search(qry, type='artist', limit=50)
+
+    return [artist_to_dict_searched(a) for a in searched['artists']['items']]
+
+
 def searcher(sp, qry, resource):
     if resource == 'albums':
         return search_albums(sp, qry)
