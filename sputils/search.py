@@ -34,8 +34,8 @@ def search_tracks(sp, qry):
 
 def artist_to_dict_searched(api_dict):
     return {
-        'name': 'artist1, artist2',
-        'uri': 'uri'
+        'name': api_dict['name'],
+        'uri': api_dict['uri']
     }
 
 
