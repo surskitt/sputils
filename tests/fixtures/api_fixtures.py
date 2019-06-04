@@ -53,3 +53,8 @@ def api_album_searched():
 @pytest.fixture
 def api_playlist():
     return helpers.mock_json('mocks/api/playlist.json')
+
+
+@pytest.fixture
+def api_artist_searched():
+    return helpers.mock_json('mocks/api/artist_searched.json')

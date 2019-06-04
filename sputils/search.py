@@ -32,6 +32,13 @@ def search_tracks(sp, qry):
     return [track_to_dict_searched(t) for t in searched['tracks']['items']]
 
 
+def artist_to_dict_searched(api_dict):
+    return {
+        'name': 'artist1, artist2',
+        'uri': 'uri'
+    }
+
+
 def searcher(sp, qry, resource):
     if resource == 'albums':
         return search_albums(sp, qry)

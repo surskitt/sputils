@@ -17,6 +17,12 @@ def test_track_to_dict_searched(api_track_searched, track_dict_searched):
     assert deepdiff.DeepDiff(track, track_dict_searched) == {}
 
 
+def test_artist_to_dict_searched(api_artist_searched, artist_dict_searched):
+    artist = search.artist_to_dict_searched(api_artist_searched)
+
+    assert deepdiff.DeepDiff(artist, artist_dict_searched) == {}
+
+
 def test_search_album(sp_mock, api_album_searched, album_dict_searched):
     sp = sp_mock.Spotify()
 
