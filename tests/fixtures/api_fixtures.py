@@ -27,6 +27,9 @@ def sp_mock(sp_mock, api_album_searched, api_album_collected, api_playlist,
         },
         'artists': {
             'items': [api_artist_searched]
+        },
+        'playlists': {
+            'items': [api_playlist]
         }
     }
 

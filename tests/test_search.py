@@ -53,10 +53,21 @@ def test_search_artist(sp_mock, api_artist_searched, artist_dict_searched):
     assert deepdiff.DeepDiff(searched, expected) == {}
 
 
+def test_search_playlists(sp_mock, api_playlist, playlist_dict):
+    sp = sp_mock.Spotify()
+
+    expected = [playlist_dict]
+
+    searched = search.search_playlists(sp, 'test')
+
+    assert deepdiff.DeepDiff(searched, expected) == {}
+
+
 @unittest.mock.patch('sputils.search.search_albums')
 @unittest.mock.patch('sputils.search.search_tracks')
 @unittest.mock.patch('sputils.search.search_artists')
-def test_searcher(mock_sar, mock_st, mock_sa, sp_mock):
+@unittest.mock.patch('sputils.search.search_playlists')
+def test_searcher(mock_sp, mock_sar, mock_st, mock_sa, sp_mock):
     sp = sp_mock.Spotify()
 
     search.searcher(sp, 'test', 'albums')
@@ -67,3 +78,6 @@ def test_searcher(mock_sar, mock_st, mock_sa, sp_mock):
 
     search.searcher(sp, 'test', 'artists')
     mock_sar.assert_called_once()
+
+    search.searcher(sp, 'test', 'playlists')
+    mock_sp.assert_called_once()

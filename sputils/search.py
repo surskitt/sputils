@@ -45,6 +45,12 @@ def search_artists(sp, qry):
     return [artist_to_dict_searched(a) for a in searched['artists']['items']]
 
 
+def search_playlists(sp, qry):
+    searched = sp.search(qry, type='playlist', limit=50)
+
+    return [common.playlist_to_dict(p) for p in searched['playlists']['items']]
+
+
 def searcher(sp, qry, resource):
     if resource == 'albums':
         return search_albums(sp, qry)
@@ -52,3 +58,5 @@ def searcher(sp, qry, resource):
         return search_tracks(sp, qry)
     if resource == 'artists':
         return search_artists(sp, qry)
+    if resource == 'playlists':
+        return search_playlists(sp, qry)
