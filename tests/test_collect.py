@@ -81,7 +81,8 @@ def test_collect_all_playlists(sp_mock, playlist_dict):
 @unittest.mock.patch('sputils.collect.collect_all_albums')
 @unittest.mock.patch('sputils.collect.collect_all_tracks')
 @unittest.mock.patch('sputils.collect.collect_all_playlists')
-def test_collector(mock_cp, mock_ct, mock_ca, sp_mock):
+@unittest.mock.patch('sputils.collect.collect_all_artists')
+def test_collector(mock_car, mock_cp, mock_ct, mock_ca, sp_mock):
     sp = sp_mock.Spotify()
 
     collect.collector(sp, 'albums')
@@ -92,3 +93,6 @@ def test_collector(mock_cp, mock_ct, mock_ca, sp_mock):
 
     collect.collector(sp, 'playlists')
     mock_cp.assert_called_once()
+
+    collect.collector(sp, 'artists')
+    mock_car.assert_called_once()
