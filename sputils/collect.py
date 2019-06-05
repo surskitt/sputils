@@ -1,4 +1,5 @@
 import concurrent.futures
+import itertools
 
 from . import common
 
@@ -72,6 +73,23 @@ def collect_all_tracks(sp, limit=50, workers=50):
     return tracks
 
 
+def collect_all_artists(sp, limit=50, workers=50):
+    albums = collect_all_albums(sp, limit, workers)
+    albums_sorted = sorted(albums, key=lambda x: x['artist'])
+
+    g = itertools.groupby(albums_sorted,
+                          key=lambda x: (x['artist'], x['artist_uri']))
+
+    def artist_gen(k, a):
+        return {
+            'name': k[0],
+            'uri': k[1],
+            'albums': list(a)
+        }
+
+    return [artist_gen(k, a) for k, a in g]
+
+
 def collect_all_playlists(sp, limit=50, workers=50):
     total_playlists = sp.current_user_playlists(1)['total']
 
@@ -97,3 +115,5 @@ def collector(sp, resource):
         return collect_all_tracks(sp)
     if resource == 'playlists':
         return collect_all_playlists(sp)
+    if resource == 'artists':
+        return collect_all_artists(sp)
