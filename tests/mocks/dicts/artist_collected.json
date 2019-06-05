@@ -1,0 +1,20 @@
+{
+    "artist": "artist1, artist2",
+    "artist_uri": "artist1_uri",
+    "albums": [
+        {
+            "name": "album",
+            "added": "mtime",
+            "tracks": [
+                {
+                    "artist": "artist1, artist2",
+                    "track": 1.01,
+                    "name": "track",
+                    "uri": "uri"
+                }
+            ],
+            "uri": "uri",
+            "art_url": "art_url"
+        }
+    ]
+}

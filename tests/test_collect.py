@@ -51,6 +51,10 @@ def test_collect_all_tracks(sp_mock, track_dict_collected):
     assert deepdiff.DeepDiff(tracks, expected) == {}
 
 
+def test_collect_all_artists(sp_mock, artist_dict_collected):
+    pass
+
+
 def test_collect_playlists(sp_mock, playlist_dict):
     expected = [playlist_dict]
 
