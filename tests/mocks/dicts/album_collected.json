@@ -1,5 +1,6 @@
 {
     "artist": "artist1, artist2",
+    "artist_uri": "artist1_uri",
     "name": "album",
     "added": "mtime",
     "tracks": [
