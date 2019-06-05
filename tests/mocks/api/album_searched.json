@@ -1,10 +1,12 @@
 {
     "artists": [
         {
-            "name": "artist1"
+            "name": "artist1",
+            "uri": "artist1_uri"
         },
         {
-            "name": "artist2"
+            "name": "artist2",
+            "uri": "artist2_uri"
         }
     ],
     "name": "album",

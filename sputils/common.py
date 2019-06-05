@@ -17,7 +17,8 @@ def album_to_dict_common(api_album):
         'artist': ', '.join(a['name'] for a in api_album['artists']),
         'name': api_album['name'],
         'uri': api_album['uri'],
-        'art_url': api_album['images'][0]['url']
+        'art_url': api_album['images'][0]['url'],
+        'artist_uri': api_album['artists'][0]['uri']
     }
 
 

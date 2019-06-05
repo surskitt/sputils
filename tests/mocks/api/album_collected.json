@@ -1,7 +1,16 @@
 {
     "added_at": "mtime",
     "album": {
-        "artists": [{"name": "artist1"}, {"name": "artist2"}],
+        "artists": [
+            {
+                "name": "artist1",
+                "uri": "artist1_uri"
+            },
+            {
+                "name": "artist2",
+                "uri": "artist2_uri"
+            }
+        ],
         "name": "album",
         "tracks": {
             "items": [
