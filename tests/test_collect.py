@@ -3,6 +3,7 @@
 
 """Tests for collection functions."""
 
+import pytest
 import unittest.mock
 
 import deepdiff
@@ -96,3 +97,6 @@ def test_collector(mock_car, mock_cp, mock_ct, mock_ca, sp_mock):
 
     collect.collector(sp, 'artists')
     mock_car.assert_called_once()
+
+    with pytest.raises(ValueError) as e:
+        collect.collector(sp, 'test')

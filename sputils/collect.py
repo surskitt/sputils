@@ -117,3 +117,5 @@ def collector(sp, resource):
         return collect_all_playlists(sp)
     if resource == 'artists':
         return collect_all_artists(sp)
+
+    raise ValueError(f'{resource} is not a valid collector resource')
