@@ -1,3 +1,4 @@
+import pytest
 import unittest.mock
 
 import deepdiff
@@ -81,3 +82,6 @@ def test_searcher(mock_sp, mock_sar, mock_st, mock_sa, sp_mock):
 
     search.searcher(sp, 'test', 'playlists')
     mock_sp.assert_called_once()
+
+    with pytest.raises(ValueError) as e:
+        search.searcher(sp, 'test', 'test')

@@ -60,3 +60,5 @@ def searcher(sp, qry, resource):
         return search_artists(sp, qry)
     if resource == 'playlists':
         return search_playlists(sp, qry)
+
+    raise ValueError(f'{resource} is not a valid search resource')
