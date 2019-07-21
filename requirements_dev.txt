@@ -12,4 +12,4 @@ twine==1.13.0
 
 pytest==4.6.2
 pytest-runner==5.1
-deepdiff==4.0.6
+deepdiff==4.0.7
